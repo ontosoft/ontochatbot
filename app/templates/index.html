@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Ontochat{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello {% if name %}{{name}} {% else %}  {% endif %}, your are in the ontochat!</h1>
+</div>
+<div class="floating-chat">
+    <i class="fa fa-comments" aria-hidden="true"></i>
+    <div class="chat">
+        <div class="header">
+            <span class="title">
+                Chatbot
+            </span>
+            <button>
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+                         
+        </div>
+        <ul class="messages">
+            <li class="self">I'm a chatbot. How are you?</li>
+        </ul>
+        <div class="footer">
+            <div class="text-box" contenteditable="true" disabled="true"></div>
+            <button id="sendMessage">send</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

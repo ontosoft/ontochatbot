@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+    ontochat-flask:
+        container_name: flask-chat
+        build: .
+        image: flask-ontochat
+        ports:
+            - '5000:5000'
+        restart: always
