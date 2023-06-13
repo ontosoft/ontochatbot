@@ -14,6 +14,21 @@ class BasicTests(unittest.TestCase):
         self.assertEqual(statuscode, 200)
     
     def test_insert_new_instance(self):
+        """
+            Use case:
+            + Hello
+            - Hi
+
+            - Please choose one of the following tasks: 
+                1: Register a new flight.
+                2: Create a restaurant ontology.
+                3: Test model ontology.
+               Enter a corresponding number for a wanted option:
+            + 2
+            -  Insert data for Restaurant name          
+            +  Halkidiki
+
+        """
         tester = self.app.test_client(self)
         response = tester.post('/chatresponse', 
                             data=json.dumps(dict(message='Hello')),
@@ -22,10 +37,16 @@ class BasicTests(unittest.TestCase):
         self.assertIn(result[0].get('response'), ['Hi','Hello', 'Greetings!']) 
         # Second element in the whole json list is the answer to the question which is an empty string
         # and this should activate our ontochat LogicAdapter
+
+        self.assertEqual("Enter a corresponding number for a wanted option" in result[1].get('response'), True)
+        esponse = tester.post('/chatresponse', 
+                            data=json.dumps(dict(message='2')),
+                            content_type='application/json')
         self.assertEqual('Insert data for Restaurant name', result[1].get('response'))
         response = tester.post('/chatresponse', 
                             data=json.dumps(dict(message='Halkidiki')),
                             content_type='application/json')
         result = json.loads(response.text)
         self.assertEqual('Insert data for ', result[0].get('response'))
+
 

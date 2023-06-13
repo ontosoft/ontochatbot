@@ -1,6 +1,7 @@
 from chatterbot.conversation import Statement
 from owlready2 import default_world
 from pathlib import Path
+import sys
 """
     OntoConversationSingleton is defined as singleton class because it can be only 
     single one for a conversation in order to keep track of the current state of 
@@ -119,20 +120,29 @@ class OntoConversationSingleton(object):
             for i in self.output_ontology.individuals(): print(i) 
 
 
-        def list_ontology_model(self, text, ontology_models):
-            found = onto.search_one(label = text)
-            # if the text is empty string then we assign the current ontology to the
-            # current_ontology_model. 
+        def list_ontology_models(self, ontology_models):
+            """
+               List all model descriptions to ask 
+               what ontology would be suitable for the user. 
+            """  
+            output_text = "Please choose one of the following tasks: "
 
-            self.ontology_models  = ontology_models;
-            if found or text =="":
-                text = "Please choose one of the given tasks:"
-                for ontology_model in self.ontology_models.values(): 
-                    text = ontology_model.search_one(label = text) 
-                    response_statement = Statement(
-                        text = self.ontochatConversation.list_ontology_models(
-                            input_statement.text, ontology_model))
-                    response_statement.confidence = 1
+            if len(ontology_models) > 0 :
+                for index, ontology_world in enumerate(ontology_models.values()): 
+                    #for i in ontology_world.get("world").individuals(): print(i)
+                    # OBOP ontology in loaded from the dictionary 
+                    self.ontologies = ontology_world.get("obop") 
+                    model_individual = ontology_world.get("world").search_one(type = self.ontologies.Model)
+                    output_text += "\n" + str(index + 1) + ": " + str( model_individual.modelDescription[0])
+
+                output_text += "\n Enter a corresponding number for a wanted option:"
+
+            else: 
+                    output_text = "There is no input model."
+
+            response_statement = Statement( text = output_text)
+            response_statement.confidence = 1
+            return  response_statement
 
 
         def print_status(self):

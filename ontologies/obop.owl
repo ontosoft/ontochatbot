@@ -621,16 +621,6 @@ This can be used to track the version of the interface used to populate the know
 
     
 
-
-    <!-- http://purl.org/net/obop/listvalue_1 -->
-
-    <owl:NamedIndividual rdf:about="http://purl.org/net/obop/listvalue_1">
-        <rdf:type rdf:resource="http://purl.org/net/obop/ListValue"/>
-        <isDefault rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isDefault>
-    </owl:NamedIndividual>
-    
-
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
