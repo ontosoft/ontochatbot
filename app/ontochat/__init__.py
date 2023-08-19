@@ -37,15 +37,14 @@ onto_output = get_ontology(str(path.joinpath('ontologies','output.owl'))).load()
 
 chatbot = ChatBot( name = "Ontochat",
                     logic_adapters=[
-                        'chatterbot.logic.MathematicalEvaluation',                    
                         {
                             'import_path': 'chatterbot.logic.BestMatch',
                         },
                         {
                             'import_path': 'ontoadapter.myadapters.OntoChatterAdapter',
                         },
-                        'chatterbot.logic.MathematicalEvaluation',
-                        'chatterbot.logic.TimeLogicAdapter'
+                       'chatterbot.logic.MathematicalEvaluation',
+                       'chatterbot.logic.TimeLogicAdapter'
                     ],
                     database_uri='sqlite:///database.sqlite3',
                     ontology_models = ontology_models, 

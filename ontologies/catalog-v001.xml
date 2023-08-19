@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1686543490867" name="http://example.org/chatbot/flight/" uri="chat_model_flights.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1686543490867" name="duplicate:http://example.org/logicinterface/restaurant/" uri="output-intermediate.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1686543490867" name="duplicate:http://example.org/logicinterface/restaurant/" uri="restaurant_model.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1686543490867" name="duplicate:http://example.org/logicinterface/restaurant/" uri="output.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1686543490867" name="http://purl.org/net/obop/" uri="obop.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1689851382948" name="http://example.org/chatbot/flight/" uri="flight_model.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1689851382948" name="http://example.org/logicinterface/restaurant" uri="output-intermediate.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1689851382948" name="duplicate:http://example.org/logicinterface/restaurant/" uri="restaurant_model.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1689851382948" name="duplicate:http://example.org/logicinterface/restaurant/" uri="output.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1689851382948" name="duplicate:http://example.org/logicinterface/restaurant/" uri="test_model.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1689851382948" name="http://purl.org/net/obop/" uri="obop.owl"/>
     </group>
 </catalog>

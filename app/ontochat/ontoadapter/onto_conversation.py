@@ -1,7 +1,8 @@
 from chatterbot.conversation import Statement
 from owlready2 import default_world
+from ontoadapter.conversation_state import Conversation_state
 from pathlib import Path
-import sys
+import logging
 """
     OntoConversationSingleton is defined as singleton class because it can be only 
     single one for a conversation in order to keep track of the current state of 
@@ -11,74 +12,106 @@ class OntoConversationSingleton(object):
     instance = None  
     class __OntoConversation():
         def __init__(self):
-            self.ontology_model = None 
+            self.state = Conversation_state()
+
+            self.ontology_models = None 
             self.ontologies = None
             self.output_ontology = None 
             self.current_ontology_model = None
 
-            self.status = None
-            self.model_previous_node = None
-            self.output_original_instance = None
-            self.startnode = None
-            self.insert_type = None
-            self.positionNumber = None
-            self.active_instance = None
-            self.current_block = None
-        
-        def search_for_string(self, text, status):
-            self.print_status()
-            if status=='probe' : 
-                if text=="":
-                    return True 
-            # print(self.ontology_model.imported_ontologies)
-            # print('List of individuals: \n')
-            # print(list(self.ontology_model.individuals()))
-            # Finding the entry element of this conversation block
-            if self.current_block is None:
-                self.current_block = self.ontology_model.search(type = self.ontologies.Block, hasPositionNumber = 1)
-            current_conversation_block = self.current_block
-            # Populating data in the output graph if the chatbot is waiting for a new data
-            if self.status == "insert" and self.model_previous_node is not None: 
-                data_property_name = self.model_previous_node.containsDatatype[0] 
-                self.model_individual_type = self.model_previous_node.isRelatedToTargetOntologyInstance[0] 
-                if self.output_original_instance is None: 
-                    self.output_original_instance = self.create_original_output_instance(self.model_individual_type)
-                self.insert_data_property(text, data_property_name )
-                self.status = "waiting"
-                self.insert_type = ""
-                path = Path.cwd()
-                self.output_ontology.save(str(path.joinpath('ontologies','output-intermediate.owl')))
+            self.logger = logging.getLogger(__name__)
+            self.logger.setLevel(logging.DEBUG)
 
-            if self.startnode == None : 
-                # Searching for the field that starts the current conversation block
-                self.startnode = self.ontology_model.search_one(type = self.ontologies.Field, 
-                                                       hasPositionNumber = 1, 
-                                                       belongsTo = current_conversation_block )
-                self.current_node = self.startnode
-                self.positionNumber = 1
-            else:
-                self.positionNumber += 1
-                self.current_node = self.ontology_model.search_one(type = self.ontologies.Field, 
-                                                       hasPositionNumber = self.positionNumber, 
-                                                        belongsTo = current_conversation_block )
+        def search_for_string(self, input_statement, mode) :
+            self.state.print_status()
+            if mode=='probe' : 
+                if input_statement=="":
+                    return True 
+            if self.state.status == 'waiting_for_model' and self.current_ontology_model is None:
+                #chatbot is waiting for a user to choose wanted ontology model (world)
+                self.select_ontology_model(input_statement)
+            # self.logger.debug(self.ontology_model.imported_ontologies)
+            # self.logger.debug('List of individuals: \n')
+            # self.logger.debug(list(self.ontology_model.individuals()))
+            # Finding the entry element of this conversation block
+            if self.state.current_block is None:
+                try:
+                    self.state.current_block = self.current_ontology_model.search(type = self.ontologies.Block, hasPositionNumber = 1)
+                    if self.state.current_block is None:
+                        raise Exception (self.current_ontology_model)
+                except Exception as no_current_block:
+                    self.logger.info("There is no conversational block in the ontology model" + str(self.current_ontology_model) )
+            current_conversation_block = self.state.current_block
+            # Populating data in the output graph if the chatbot is waiting for a new data
+            if self.state.status == "insert" and self.state.model_previous_node is not None: 
+                self.insert_data(input_statement)
+
+            return self.take_new_node_and_generate_response(current_conversation_block) 
+
+        def take_new_node_and_generate_response(self, current_conversation_block):
+            self.finding_next_node(current_conversation_block)
 
             # If the current node is of type Field then it requires data to be entered
-            if self.current_node is not None and self.ontologies.Field in self.current_node.is_a :
-                output_string = str(self.current_node.hasLabel[0])
-                self.status = "insert"
-                self.insert_type = "new_instance"
+            if self.state.current_node is not None and self.ontologies.Field in self.state.current_node.is_a :
+                output_string = str(self.state.current_node.hasLabel[0])
+                self.state.status = "insert"
+                self.state.insert_type = "new_instance"
             else:
                 output_string = ""
 
-            self.model_previous_node = self.current_node
+            self.state.model_previous_node = self.state.current_node
             answer = "Insert data for " + str(output_string);
             response_statement = Statement(text = answer)
             response_statement.confidence = 1
 
-            self.print_ontology_state()
-            return response_statement 
+            self.print_output_ontology_state()
+            return response_statement
+
+        def finding_next_node(self, current_conversation_block):
+            if self.state.startnode is None : 
+                # Searching for the field that starts the current conversation block
+                self.state.startnode = self.current_ontology_model.search_one(type = self.ontologies.Field, 
+                                                       hasPositionNumber = 1, 
+                                                       belongsTo = current_conversation_block )
+                self.state.current_node = self.state.startnode
+                self.state.positionNumber = 1
+            else:
+                self.state.positionNumber += 1
+                self.state.current_node = self.current_ontology_model.search_one(type = self.ontologies.Field, 
+                                                       hasPositionNumber = self.state.positionNumber, 
+                                                        belongsTo = current_conversation_block )
+
+        def insert_data(self, input_statement):
+            data_property_name = self.state.model_previous_node.containsDatatype[0] 
+            self.state.model_individual_type = self.state.model_previous_node.isRelatedToTargetOntologyInstance[0] 
+            # if instance of a class is not already created call the function to create it
+            if self.state.output_original_instance is None: 
+                self.state.output_original_instance = self.create_original_output_instance(self.state.model_individual_type)
+            # insert data property related to the output_original_instance
+            self.insert_data_property(input_statement, data_property_name )
+            self.state.status = "waiting"
+            self.insert_type = ""
+            path = Path.cwd()
+            self.output_ontology.save(str(path.joinpath('ontologies','output-intermediate.owl')))
+
+        def select_ontology_model(self, input_statement):
+            """ 
+                According to the input text (containing number) current_ontology_model should be 
+                selected from the dctionary of all ontology models
+            """
+            import re
+            self.logger.debug("waiting: Input statement:")
+            self.logger.debug(input_statement.__dict__)
+            self.logger.debug("Chosen_option " + input_statement.text)
+            chosen_option = re.findall('\-?\d+', input_statement.text)
+            self.logger.debug("Chosen option is: " + chosen_option[0])
+            for onto_world in self.ontology_models.values(): 
+                if chosen_option[0] == str(onto_world['index']):
+                    self.ontologies = onto_world.get("obop") 
+                    self.current_ontology_model = onto_world.get('world')
 
 
+        
 
 
         def create_original_output_instance(self, model_individual_type):
@@ -103,20 +136,23 @@ class OntoConversationSingleton(object):
 
         def insert_data_property(self, text, data_property_name):
             #current_place_holder = find_current_instance() 
-            if self.insert_type == "new_instance" and self.model_previous_node is not None: 
+            if self.state.insert_type == "new_instance" and self.state.model_previous_node is not None: 
                 print('Insert data property for the model: ', end='')
-                print(self.model_previous_node)
+                print(self.state.model_previous_node)
                 print('Insert data property for the instance: ', end='')
-                print(self.output_original_instance)               
+                print(self.state.output_original_instance)               
                 with self.output_ontology:
-                    setattr(self.output_original_instance, str(data_property_name.name), str(text))
+                    if data_property_name.is_functional_for(self.create_original_output_instance.__class__) :
+                        setattr(self.state.output_original_instance, str(data_property_name.name), str(text))
+                    else :
+                        getattr(self.state.output_original_instance, str(data_property_name.name)).append(str(text))
 
-        def print_ontology_state(self):
-            print("Ontology state:")
-            print ("\nList of classes :", end='')
+        def print_output_ontology_state(self):
+            print("Output ontology state:")
+            print ("\nList of the output knowledge graph classes :", end='')
             for c in self.output_ontology.classes(): print (c.name)
             #print(BusinessEntity)
-            print ("List of individuals:")
+            print ("List of oputput ontology individuals:")
             for i in self.output_ontology.individuals(): print(i) 
 
 
@@ -134,8 +170,11 @@ class OntoConversationSingleton(object):
                     self.ontologies = ontology_world.get("obop") 
                     model_individual = ontology_world.get("world").search_one(type = self.ontologies.Model)
                     output_text += "\n" + str(index + 1) + ": " + str( model_individual.modelDescription[0])
+                    ontology_world["index"] = index + 1
 
                 output_text += "\n Enter a corresponding number for a wanted option:"
+                self.ontology_models = ontology_models
+                self.state.status = 'waiting_for_model'
 
             else: 
                     output_text = "There is no input model."
@@ -143,31 +182,6 @@ class OntoConversationSingleton(object):
             response_statement = Statement( text = output_text)
             response_statement.confidence = 1
             return  response_statement
-
-
-        def print_status(self):
-            print("\n-------------------------------\n")
-            print("Status: ", end='') 
-            print(self.status) if self.status else print("")
-            print("Previous node : ", end='' )
-            print(self.model_previous_node.iri) if self.model_previous_node and self.model_previous_node.iri else print("")
-            print("Start node: ", end='' ) 
-            print(self.startnode.iri) if self.startnode and self.startnode.iri else print("")
-            print("Type of insert: ", end='')
-            print(self.insert_type) if self.insert_type else print("")
-            print("Position number: ", end='' )
-            print(self.positionNumber) if self.positionNumber else print("")
-            print("Active instance: ", end='')
-            print(self.active_instance) if self.active_instance else print("")
-            print("Current block: ", end='')
-            print(self.current_block) if self.current_block else print("")
-            print("Original instance: ", end='')
-            print(self.output_original_instance.iri) if self.output_original_instance and self.output_original_instance.iri else print("")
-    
-            
-
-
-
 
     def __new__(cls):
         if not OntoConversationSingleton.instance:

@@ -3,6 +3,7 @@ from chatterbot.conversation import Statement
 from owlready2 import JAVA_EXE
 from owlready2 import sync_reasoner
 from ontoadapter.onto_conversation import OntoConversationSingleton  
+import logging
 JAVA_EXE = 'usr/bin/java'
 
 #The following lines were necessary to import our  
@@ -16,13 +17,15 @@ class OntoChatterAdapter(LogicAdapter):
     def __init__(self, chatbot, **kwargs):
         super().__init__(chatbot, **kwargs)
 
+        self.logger = kwargs.get('logger', logging.getLogger(__name__))
+
         self.ontology_models = kwargs.get('ontology_models')
         self.output_ontology = kwargs.get('output_ontology')
         self.ontochatConversation = OntoConversationSingleton() 
-        print("----------------------\n" + "Creating OntoChatterAdapter")
         self.ontochatConversation.ontologies = kwargs.get('ontologies')
         self.ontochatConversation.current_ontology_model = None 
         self.ontochatConversation.output_ontology = self.output_ontology
+
 
 
     def can_process(self, statement):
@@ -37,7 +40,10 @@ class OntoChatterAdapter(LogicAdapter):
         """       
         if self.ontochatConversation.current_ontology_model is None :
             if statement.text == "":
-               return True;
+               return True
+            elif self.ontochatConversation.state.status == 'waiting' or \
+                self.ontochatConversation.state.status == "waiting_for_model" :
+               return True
             else: 
                 return False
         else:
@@ -60,11 +66,10 @@ class OntoChatterAdapter(LogicAdapter):
             _type_: _description_
         
         """
-        if self.ontochatConversation.current_ontology_model is None :
-            if input_statement.text == "":
+        if self.ontochatConversation.current_ontology_model is None and \
+            self.ontochatConversation.state.status != 'waiting_for_model' and input_statement.text == "":
                 return self.ontochatConversation.list_ontology_models(self.ontology_models)
         else: 
-            response_statement = self.ontochatConversation.search_for_string(input_statement, "data")
-        return response_statement
+            return self.ontochatConversation.search_for_string(input_statement, "data")
 
 

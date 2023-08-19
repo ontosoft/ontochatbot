@@ -1,8 +1,13 @@
-# Ontochatbot
+# Ontochatbot - Ontology-Based chatbots for Populating Knowledge Graphs
+
+This is a prototype tools that executes chatbot models. The chatbot models are knowledge graphs created using terms of the OBOP ontology and corresponding domain ontologies. 
+
+## Use Cases
+Examples of chatbot conversations that populate simple knowledge graphs for a restaurant menu and flight reservation can be found in the following files /ontology/restaurant ontologies/restaurant_model.owl and ontologies/flight_model.owl. The unit tests include a case where a conversation populates a knowledge graph for a restaurant menu.
 
 
 ## Running application
-In order to run the chatbot on your local maching it is necessary to have installed docker desktop.
+In order to run the chatbot on your local maching it is necessary to have installed Docker desktop.
 
 Run the following command from the project directory:
 docker compose up

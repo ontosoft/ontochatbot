@@ -4,23 +4,100 @@
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:ns="http://www.w3.org/2003/06/sw-vocab-status/ns#"
      xmlns:v1="http://purl.org/goodrelations/v1#"
-     xmlns:obo="http://purl.obolibrary.org/obo/"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:tio="http://purl.org/tio/ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:foaf="http://xmlns.com/foaf/0.1/"
      xmlns:obop="http://purl.org/net/obop/"
+     xmlns:prov="http://www.w3.org/ns/prov#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:chebi="http://purl.obolibrary.org/obo/chebi/"
      xmlns:terms="http://purl.org/dc/terms/"
      xmlns:schema="http://schema.org/"
+     xmlns:terms1="http://open.vocab.org/terms/"
+     xmlns:dbpedia="http://dbpedia.org/ontology/"
      xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
-     xmlns:NCBITaxon="http://purl.obolibrary.org/obo/NCBITaxon#">
+     xmlns:powder-s="http://www.w3.org/2007/05/powder-s#">
     <owl:Ontology rdf:about="http://example.org/chatbot/flight">
         <owl:imports rdf:resource="http://purl.org/goodrelations/v1"/>
         <owl:imports rdf:resource="http://purl.org/net/obop/v01"/>
+        <owl:imports rdf:resource="http://purl.org/tio/ns#"/>
     </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://open.vocab.org/terms/defines -->
+
+    <owl:AnnotationProperty rdf:about="http://open.vocab.org/terms/defines"/>
+    
+
+
+    <!-- http://open.vocab.org/terms/describes -->
+
+    <owl:AnnotationProperty rdf:about="http://open.vocab.org/terms/describes"/>
+    
+
+
+    <!-- http://www.w3.org/2007/05/powder-s#describedby -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2007/05/powder-s#describedby"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#wasDerivedFrom -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/prov#wasDerivedFrom"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://dbpedia.org/ontology/Agent -->
+
+    <owl:Class rdf:about="http://dbpedia.org/ontology/Agent">
+        <rdfs:comment xml:lang="en">Analogous to a foaf:Agent, an agent is an entity that acts. This is intended to be the super class of Person and Organisation.</rdfs:comment>
+        <rdfs:comment xml:lang="gl">Análogo a foaf:Agent, un axente é unha entidade que actúa. Destínase a ser a super clase de Persoa e Organización.</rdfs:comment>
+        <rdfs:comment xml:lang="fr">Equivaut à foaf:Agent, un agent est une entité qui agit. C&apos;est supposé être la super classe de Person et de Organisation.</rdfs:comment>
+        <rdfs:comment xml:lang="el">Ανάλογα με την κλάση foaf:Agent, ένας πράκτορας είναι μια οντότητα που ενεργεί. Αυτό προορίζεται να είναι μια υπερκλάση της κλάσης Άτόμο και Οργανισμός.</rdfs:comment>
+        <rdfs:comment xml:lang="ur">ایک ایجنٹ ایک ایسا ادارہ ہے جو کام کرتا ہے۔ اس کا مقصد شخص اور تنظیم کا فوق درجہ ہونا ہے۔</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="http://dbpedia.org/ontology/"/>
+        <rdfs:label xml:lang="de">Agent</rdfs:label>
+        <rdfs:label xml:lang="da">agent</rdfs:label>
+        <rdfs:label xml:lang="en">agent</rdfs:label>
+        <rdfs:label xml:lang="fr">agent</rdfs:label>
+        <rdfs:label xml:lang="nl">agent</rdfs:label>
+        <rdfs:label xml:lang="es">agente</rdfs:label>
+        <rdfs:label xml:lang="it">agente</rdfs:label>
+        <rdfs:label xml:lang="gl">axente</rdfs:label>
+        <rdfs:label xml:lang="ga">gníomhaire</rdfs:label>
+        <rdfs:label xml:lang="el">πράκτορας</rdfs:label>
+        <rdfs:label xml:lang="ur">نمائندہ</rdfs:label>
+        <rdfs:label xml:lang="ja">エージェント</rdfs:label>
+        <rdfs:label xml:lang="ko">에이전트</rdfs:label>
+        <powder-s:describedby rdf:resource="http://dbpedia.org/ontology/data/definitions.ttl"/>
+        <prov:wasDerivedFrom rdf:resource="http://mappings.dbpedia.org/index.php/OntologyClass:Agent"/>
+    </owl:Class>
     
 
 
@@ -35,6 +112,15 @@
     
 
 
+    <!-- http://example.org/chatbot/flight/airline_model_1 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/airline_model_1">
+        <rdf:type rdf:resource="http://dbpedia.org/ontology/Agent"/>
+        <obop:modelBelongsTo rdf:resource="http://example.org/chatbot/flight/block_1"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://example.org/chatbot/flight/block_1 -->
 
     <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/block_1">
@@ -45,10 +131,34 @@
     
 
 
+    <!-- http://example.org/chatbot/flight/conn_1 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/conn_1">
+        <rdf:type rdf:resource="http://purl.org/net/obop/Connection"/>
+        <obop:containsDatatype rdf:resource="http://purl.org/tio/ns#operatedBy"/>
+        <obop:hasDestination rdf:resource="http://example.org/chatbot/flight/airline_model_1"/>
+        <obop:hasSource rdf:resource="http://example.org/chatbot/flight/flight_1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/chatbot/flight/field_1_1 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/field_1_1">
+        <rdf:type rdf:resource="http://purl.org/net/obop/Field"/>
+        <obop:belongsTo rdf:resource="http://example.org/chatbot/flight/block_1"/>
+        <obop:specifiesEndOfIRI rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</obop:specifiesEndOfIRI>
+        <obop:isRelatedToTargetOntologyInstance rdf:resource="http://example.org/chatbot/flight/flight_1"/>
+        <obop:hasLabel>flight descriptor (flight name)</obop:hasLabel>
+        <obop:hasPositionNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1</obop:hasPositionNumber>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://example.org/chatbot/flight/flight_1 -->
 
     <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/flight_1">
-        <rdf:type rdf:resource="http://purl.org/goodrelations/v1#BusinessEntity"/>
+        <rdf:type rdf:resource="http://purl.org/tio/ns#Flight"/>
         <obop:modelBelongsTo rdf:resource="http://example.org/chatbot/flight/block_1"/>
     </owl:NamedIndividual>
     
@@ -61,6 +171,35 @@
         <obop:modelDescription xml:lang="en">Register a new flight.</obop:modelDescription>
         <rdfs:comment xml:lang="en">Flight model can be used to describe a simple flight, especially start airport and destination airport of that flight and information for booking flight tickets. </rdfs:comment>
     </owl:NamedIndividual>
+    
+
+
+    <!-- http://purl.org/goodrelations/v1#legalName -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/goodrelations/v1#legalName"/>
+    
+
+
+    <!-- http://purl.org/tio/ns#operatedBy -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/tio/ns#operatedBy"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="http://dbpedia.org/ontology/">
+        <terms1:defines rdf:resource="http://dbpedia.org/ontology/Agent"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://dbpedia.org/ontology/data/definitions.ttl">
+        <terms1:describes rdf:resource="http://dbpedia.org/ontology/Agent"/>
+    </rdf:Description>
 </rdf:RDF>
 
 
