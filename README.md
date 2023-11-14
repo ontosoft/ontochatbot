@@ -22,10 +22,10 @@ It is necessary to generate your own python virtual environment and to install d
 pip install -r requirements.txt  
 In order to run flask application you have to create the following environment variables:  
 
-% export FLASK_APP=chatbot.py
-% export FLASK_DEBUG=1 
+% export FLASK_APP=chatbot.py  
+% export FLASK_DEBUG=1  
 
-and then run the application using:
+and then run the application using:  
 % flask run
 
 
