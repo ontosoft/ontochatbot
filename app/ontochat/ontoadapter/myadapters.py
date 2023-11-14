@@ -41,8 +41,8 @@ class OntoChatterAdapter(LogicAdapter):
         if self.ontochatConversation.current_ontology_model is None :
             if statement.text == "":
                return True
-            elif self.ontochatConversation.state.status == 'waiting' or \
-                self.ontochatConversation.state.status == "waiting_for_model" :
+            elif self.ontochatConversation.state.activity == 'waiting' or \
+                self.ontochatConversation.state.activity == "waiting_for_model" :
                return True
             else: 
                 return False
@@ -67,7 +67,7 @@ class OntoChatterAdapter(LogicAdapter):
         
         """
         if self.ontochatConversation.current_ontology_model is None and \
-            self.ontochatConversation.state.status != 'waiting_for_model' and input_statement.text == "":
+            self.ontochatConversation.state.activity != 'waiting_for_model' and input_statement.text == "":
                 return self.ontochatConversation.list_ontology_models(self.ontology_models)
         else: 
             return self.ontochatConversation.search_for_string(input_statement, "data")

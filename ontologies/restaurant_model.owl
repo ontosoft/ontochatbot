@@ -158,16 +158,16 @@
     
 
 
-    <!-- http://example.org/logicinterface/restaurant/field_1_1 -->
+    <!-- http://example.org/logicinterface/restaurant/question_1_1 -->
 
-    <owl:NamedIndividual rdf:about="http://example.org/logicinterface/restaurant/field_1_1">
-        <rdf:type rdf:resource="http://purl.org/net/obop/Field"/>
+    <owl:NamedIndividual rdf:about="http://example.org/logicinterface/restaurant/question_1_1">
+        <rdf:type rdf:resource="http://purl.org/net/obop/Question"/>
         <obop:belongsTo rdf:resource="http://example.org/logicinterface/restaurant/block_1"/>
         <obop:containsDatatype rdf:resource="http://purl.org/goodrelations/v1#legalName"/>
         <obop:isRelatedToTargetOntologyInstance rdf:resource="http://example.org/logicinterface/restaurant/restaurant_1"/>
         <obop:hasLabel>Restaurant name</obop:hasLabel>
         <obop:hasPositionNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1</obop:hasPositionNumber>
-        <dc:title>field_1_1_restaurant_name</dc:title>
+        <dc:title>question_1_1_restaurant_name</dc:title>
     </owl:NamedIndividual>
     
 

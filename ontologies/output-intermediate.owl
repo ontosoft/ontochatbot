@@ -3,20 +3,10 @@
          xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:owl="http://www.w3.org/2002/07/owl#"
-         xml:base="http://example.org/logicinterface/restaurant"
-         xmlns="http://example.org/logicinterface/restaurant#"
-         xmlns:v1="http://purl.org/goodrelations/v1#">
+         xml:base="http://example.org/ontochatbot"
+         xmlns="http://example.org/ontochatbot#">
 
-<owl:Ontology rdf:about="http://example.org/logicinterface/restaurant">
-  <owl:imports rdf:resource="http://purl.org/goodrelations/v1"/>
-  <owl:imports rdf:resource="http://purl.org/net/obop/v01"/>
-</owl:Ontology>
-
-<v1:availabilityStarts rdf:about="#envo_010009341">
-  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-  <rdf:type rdf:resource="http://purl.org/goodrelations/v1#SomeItems"/>
-  <v1:legalName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Halkidiki</v1:legalName>
-</v1:availabilityStarts>
+<owl:Ontology rdf:about="http://example.org/ontochatbot"/>
 
 
 </rdf:RDF>

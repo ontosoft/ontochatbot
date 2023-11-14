@@ -142,17 +142,46 @@
     
 
 
-    <!-- http://example.org/chatbot/flight/field_1_1 -->
+    <!-- http://example.org/chatbot/flight/question_1_1 -->
 
-    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/field_1_1">
-        <rdf:type rdf:resource="http://purl.org/net/obop/Field"/>
+    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/question_1_1">
+        <rdf:type rdf:resource="http://purl.org/net/obop/Question"/>
         <obop:belongsTo rdf:resource="http://example.org/chatbot/flight/block_1"/>
         <obop:specifiesEndOfIRI rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</obop:specifiesEndOfIRI>
         <obop:isRelatedToTargetOntologyInstance rdf:resource="http://example.org/chatbot/flight/flight_1"/>
-        <obop:hasLabel>flight descriptor (flight name)</obop:hasLabel>
+        <obop:hasLabel> Please enter the flight number (flight designator)</obop:hasLabel>
         <obop:hasPositionNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int">1</obop:hasPositionNumber>
     </owl:NamedIndividual>
     
+
+
+    <!-- http://example.org/chatbot/flight/question_1_2 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/question_1_2">
+        <rdf:type rdf:resource="http://purl.org/net/obop/Question"/>
+        <obop:belongsTo rdf:resource="http://example.org/chatbot/flight/block_1"/>
+        <obop:specifiedBy rdf:about="http://example.org/chatbot/flight/conn_1"/>
+        <obop:hasLabel>Enter the airline that operates your flight.
+         Choose one of the following options:
+         1. Lufthansa
+         2. Ryanair
+         3. Iberia
+        </obop:hasLabel>
+        <obop:hasPositionNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2</obop:hasPositionNumber>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://example.org/chatbot/flight/branching_1_1 -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/chatbot/flight/branching_1_1">
+        <rdf:type rdf:resource="http://purl.org/net/obop/Branching"/>
+        <obop:isRelatedToTargetOntologyInstance rdf:resource="http://example.org/chatbot/flight/flight_1"/>
+        <obop:hasLabel>flight number (flight designator)</obop:hasLabel>
+        <obop:hasPositionNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2</obop:hasPositionNumber>
+    </owl:NamedIndividual>
+    
+
 
 
     <!-- http://example.org/chatbot/flight/flight_1 -->

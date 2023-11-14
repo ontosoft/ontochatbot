@@ -5,8 +5,7 @@ This is a prototype tool that executes chatbot models. The chatbot models are kn
 ## Use Cases
 Examples of chatbot conversations that populate simple knowledge graphs for a restaurant menu and flight reservation can be found in the following files /ontology/restaurant ontologies/restaurant_model.owl and ontologies/flight_model.owl. The unit tests include a case where a conversation populates a knowledge graph for a restaurant menu.
 
-
-## Running application
+## Running application in a Docker container 
 In order to run the chatbot on your local maching it is necessary to have installed Docker desktop.
 
 Run the following command from the project directory:
@@ -17,12 +16,16 @@ http://localhost:5000/
 
 
 
-## Starting flask
+## Running application using flask
 If you want to start the application from flask directly then you can do it in the follwing way.
-It is necessary to generation your own python virtual environment, and to create the following environment variables:
+It is necessary to generate your own python virtual environment and to install dependencies from the requirements.txt file using 
+pip install -r requirements.txt
+In order to run flask application you have to create the following environment variables:
 
 % export FLASK_APP=chatbot.py
 % export FLASK_DEBUG=1 
+
+and then run the application using:
 % flask run
 
 

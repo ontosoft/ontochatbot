@@ -78,11 +78,12 @@ function sendNewMessage() {
         data: jsonMessage,
         dataType: "json",
         success: function (result) {
-           for (const response in result) {
-             console.log(response.response);
+           console.log(result);
+           for (const i in result) {
+             console.log(result[i]);
              messagesContainer.append([
               '<li class="self">',
-              response.response,
+              result[i].response.replace(/\n/g, "<br />"),
               '</li>'
              ].join(''));
 
