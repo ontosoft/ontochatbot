@@ -18,9 +18,9 @@ http://localhost:5000/
 
 ## Running application using flask
 If you want to start the application from flask directly then you can do it in the follwing way.
-It is necessary to generate your own python virtual environment and to install dependencies from the requirements.txt file using 
-pip install -r requirements.txt
-In order to run flask application you have to create the following environment variables:
+It is necessary to generate your own python virtual environment and to install dependencies from the requirements.txt file using command: 
+pip install -r requirements.txt  
+In order to run flask application you have to create the following environment variables:  
 
 % export FLASK_APP=chatbot.py
 % export FLASK_DEBUG=1 
